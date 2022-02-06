@@ -104,37 +104,3 @@ class WordleBot:
                 res = guess
 
         return res
-
-
-def main():
-    wb = WordleBot(100, 1000)
-    print(wb.get_best_guess())
-
-
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    main()
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
-# word_index:
-# 1313
-# 83
-# 2000
-# 1433
-# 100
-#
-#
-#
-# Muffin+Smartie:
-# 1313: 4
-# 83: 7 FAIL
-# 2000: 6
-# 1433: 5
-# 100: 3
-#
-# Computer
-# 1313: 5
-# 83: 3
-# 2000: 4
-# 1433: 4
-# 100: 3
