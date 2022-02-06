@@ -1,5 +1,8 @@
 # wordlebot
 
+## First word to guess
+YOU SHOULD USE `ROATE`!!
+
 ## The game
 run `python game.py`
 
