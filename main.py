@@ -1,7 +1,5 @@
 import random
 
-from util import get_match_list, get_accept_list
-
 ALPHABET = 'abcdefghijklmnopqrstuvwxyz'
 ALPHABET_MAP = {ALPHABET[i]: i for i in range(26)}
 
@@ -64,15 +62,29 @@ class MatchCharacteristics:
 
 class WordleBot:
     # roate is the best
-    def __init__(self, sample_limit=100, accept_limit=1000):
-        self.sample_space = get_match_list()
-        self.accept_list = get_accept_list()
+    def __init__(self, match_file_name, accept_file_name, sample_limit=100, accept_limit=1000):
+        self.match_file_name = match_file_name
+        self.accept_file_name = accept_file_name
+        self.sample_space = self.get_word_list(match_file_name)
+        self.accept_list = self.get_word_list(accept_file_name)
         self.sample_limit = sample_limit
         self.accept_limit = accept_limit
 
+        self.green = set()
+        self.yellow = set()
+
+    @staticmethod
+    def get_word_list(filename):
+        with open(filename, 'r') as f:
+            match_list = f.read()
+        return [x for x in match_list.lower().split('\n') if len(x) == 5]
+
     def reload(self):
-        self.sample_space = get_match_list()
-        self.accept_list = get_accept_list()
+        self.sample_space = self.get_word_list(self.match_file_name)
+        self.accept_list = self.get_word_list(self.accept_file_name)
+
+        self.green = set()
+        self.yellow = set()
 
     def condition(self, exact_match, partial_match, does_not_match):
         mchar = MatchCharacteristics(exact_match, partial_match, does_not_match)
@@ -104,3 +116,58 @@ class WordleBot:
                 res = guess
 
         return res
+
+    def run(self):
+        print('best guess: raise')
+        while True:
+            green = input('green: ')
+            self.green.update(set(green))
+            green = {i: c for i, c in enumerate(green) if c != ' '}
+            if not green:
+                green = {}
+
+            yellow = input('yellow: ')
+            self.yellow.update(set(yellow))
+            yellow = {i: c for i, c in enumerate(yellow) if c != ' '}
+            if not yellow:
+                yellow = {}
+
+            gray = input('gray: ')
+            gray = {x for x in gray if x not in self.green and x not in self.yellow}
+            self.condition(green, yellow, gray)
+            print('best guess:', self.get_best_guess())
+
+
+
+def main():
+    wb = WordleBot('steve_match.txt', 'steve_accept.txt', 100, 1000)
+    wb.run()
+
+
+# Press the green button in the gutter to run the script.
+if __name__ == '__main__':
+    main()
+
+# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+# word_index:
+# 1313
+# 83
+# 2000
+# 1433
+# 100
+#
+#
+#
+# Muffin+Smartie:
+# 1313: 4
+# 83: 7 FAIL
+# 2000: 6
+# 1433: 5
+# 100: 3
+#
+# Computer
+# 1313: 5
+# 83: 3
+# 2000: 4
+# 1433: 4
+# 100: 3
