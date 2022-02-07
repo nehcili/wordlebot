@@ -1,7 +1,7 @@
 # wordlebot
 
 ## First word to guess
-YOU SHOULD USE `ROATE`!!
+YOU SHOULD USE `ROATE` (for wordle) and 'RAISE' for (wordhoot)!!
 
 ## The game
 run `python game.py`
